@@ -3,9 +3,8 @@ module JuMP4DEA
 import JuMP
 import MathProgBase
 
-export solveDEA, deaModel
+export solveDEA
 
-#
 #type deaModel
 #  m::JuMP.Model
 
@@ -238,4 +237,3 @@ end
 #end
 
 end
-
