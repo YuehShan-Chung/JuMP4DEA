@@ -124,7 +124,7 @@ function checkOrientation(constrLB::Vector{Float64}, constrUB::Vector{Float64})
   return orientation, sumPosition
 end
 
-function solveDEAM(m::JuMP.Model; limitSize=300)
+function solveDEAM(m::JuMP.Model; limitSize=300, multiplier=1000)
   # get original model data
   originalConstrMatrix = JuMP.prepConstrMatrix(m)
   originalObjCoeff, originalConstrLB, originalConstrUB = JuMP.prepProblemBounds(m)
@@ -141,7 +141,6 @@ function solveDEAM(m::JuMP.Model; limitSize=300)
   orientation, sumPosition = checkOrientation(originalConstrLB, originalConstrUB)
 
   # 紀錄k，並將原本的k縮小m倍
-  multiplier = 100
   k = ones(Float64, originalConstrNum)
   num = convert(Int, (originalConstrNum-1)/2)
   #num = convert(Int, num)
