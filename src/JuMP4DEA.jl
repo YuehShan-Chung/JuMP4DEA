@@ -147,7 +147,8 @@ function solveDEAM(m::JuMP.Model; limitSize=300, multiplier=1000)
   k[1:num] = -originalConstrMatrix[1:num, thetaPosition]
   k[(num + 1):originalConstrNum-1] = originalConstrLB[(num + 1):originalConstrNum-1]
   k = transpose(k)
-  originalConstrMatrix[:, thetaPosition] = originalConstrMatrix[:, thetaPosition]*multiplier
+  originalConstrMatrix[1:num, thetaPosition] = originalConstrMatrix[1:num, thetaPosition]*multiplier
+  originalConstrLB[(num + 1):originalConstrNum-1] = originalConstrLB[(num + 1):originalConstrNum-1]*multiplier
 
   # random sampling
   # 隨機挑選在變數並將該變數的index儲存於set中
