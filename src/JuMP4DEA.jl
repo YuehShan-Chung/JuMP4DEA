@@ -148,7 +148,6 @@ function solveDEAM(m::JuMP.Model; limitSize=300, multiplier=1000)
   k[(num + 1):originalConstrNum-1] = originalConstrLB[(num + 1):originalConstrNum-1]
   k = transpose(k)
   originalConstrMatrix[1:num, thetaPosition] = originalConstrMatrix[1:num, thetaPosition]*multiplier
-  originalConstrLB[(num + 1):originalConstrNum-1] = originalConstrLB[(num + 1):originalConstrNum-1]*multiplier
 
   # random sampling
   # 隨機挑選在變數並將該變數的index儲存於set中
@@ -189,7 +188,12 @@ function solveDEAM(m::JuMP.Model; limitSize=300, multiplier=1000)
     MathProgBase.optimize!(lm)
 
     stat = MathProgBase.status(lm)
-    constrDuals = MathProgBase.getconstrduals(lm)
+
+    if stat == :Infeasible
+      constrDuals = MathProgBase.getinfeasibilityray(lm)
+    else
+      constrDuals = MathProgBase.getconstrduals(lm)
+    end
 
     #if sumPosition != 0 && orientation == "output"
     #  constrDuals[sumPosition] = -constrDuals[sumPosition]
